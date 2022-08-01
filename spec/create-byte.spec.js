@@ -1,4 +1,4 @@
-const { Byte } = require("../src")
+const { Byte } = require("../src/byte")
 
 describe("Does Byte stuff", function() {
 
@@ -16,6 +16,16 @@ describe("Does Byte stuff", function() {
 
     expect(result).toEqual(expectedResult);
   })
+
+  it("Returns 8 bit string representing 0",  function() {
+    const byte = new Byte(0, 8);
+
+    const result = byte.toString();
+    const expectedResult = '00000000';
+
+    expect(result).toEqual(expectedResult);
+  })
+
 
   it("Throws if decimal is larger than bit size", () => {
     expect(() => new Byte(256, 8)).toThrow(new Error('Not enough bits for decimal'));
