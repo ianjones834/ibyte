@@ -1,15 +1,15 @@
-const { Byte } = require("../src/byte")
+const { Bits } = require("../src/bits")
 
 describe("Does Byte stuff", function() {
 
   it("Creates a 8 bit Byte from a decimal", function() {
-    const byte = new Byte(12, 8);
+    const byte = new Bits(12, 8);
 
     expect(byte).not.toBeNull();
   })
 
   it("Returns 8 bit string representing 12",  function() {
-    const byte = new Byte(12, 8);
+    const byte = new Bits(12, 8);
 
     const result = byte.toString();
     const expectedResult = '00001100';
@@ -18,7 +18,7 @@ describe("Does Byte stuff", function() {
   })
 
   it("Returns 8 bit string representing 0",  function() {
-    const byte = new Byte(0, 8);
+    const byte = new Bits(0, 8);
 
     const result = byte.toString();
     const expectedResult = '00000000';
@@ -28,11 +28,11 @@ describe("Does Byte stuff", function() {
 
 
   it("Throws if decimal is larger than bit size", () => {
-    expect(() => new Byte(256, 8)).toThrow(new Error('Not enough bits for decimal'));
+    expect(() => new Bits(256, 8)).toThrow(new Error('Not enough bits for decimal'));
   })
 
   it("Returns hexadecimal string representing the decimal 46", () => {
-    const byte = new Byte(46, 8);
+    const byte = new Bits(46, 8);
 
     const result = byte.toHex();
     const expectedResult = '2e';
@@ -41,7 +41,7 @@ describe("Does Byte stuff", function() {
   })
 
   it("Shifts bits left", () => {
-    const byte = new Byte(255, 8);
+    const byte = new Bits(255, 8);
 
     const result = byte.shiftLeft(2).toString();
     const expectedResult = '11111100';
@@ -49,9 +49,18 @@ describe("Does Byte stuff", function() {
     expect(result).toEqual(expectedResult);
   });
 
+  it("Shift bits left", () => {
+    const byte = new Bits(4, 8);
+
+    const result = byte.shiftLeft(2).toString();
+    const expectedResult = '00010000';
+
+    expect(result).toEqual(expectedResult);
+  });
+
 
   it("Shifts bits right", () => {
-    const byte = new Byte(255, 8);
+    const byte = new Bits(255, 8);
 
     const result = byte.shiftRight(2).toString();
     const expectedResult = '00111111';
@@ -59,12 +68,31 @@ describe("Does Byte stuff", function() {
     expect(result).toEqual(expectedResult);
   });
 
+  it("Shifts bits right", () => {
+    const byte = new Bits(4, 8);
+
+    const result = byte.shiftRight(2).toString();
+    const expectedResult = '00000001';
+
+    expect(result).toEqual(expectedResult);
+  });
+
   it("Performs xor on two Bytes", () => {
-    const firstByte = new Byte(156, 8);
-    const secondByte = new Byte(223, 8);
+    const firstByte = new Bits(156, 8);
+    const secondByte = new Bits(223, 8);
 
     const result = firstByte.xor(secondByte).toString();
     const expectedResult = '01000011'
+
+    expect(result).toEqual(expectedResult)
+  });
+
+  it("Performs xor on two bytes", () => {
+    const firstByte = new Bits(36, 7);
+    const secondByte = new Bits(223, 9);
+
+    const result = firstByte.xor(secondByte).toString();
+    const expectedResult = '011111011';
 
     expect(result).toEqual(expectedResult)
   });

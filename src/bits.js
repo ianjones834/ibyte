@@ -1,4 +1,4 @@
-module.exports.Byte = class Byte {
+module.exports.Bits = class Bits {
   #byteArray;
   #size;
 
@@ -26,33 +26,38 @@ module.exports.Byte = class Byte {
 
   shiftLeft = (moves) => {
     let byte = this.#byteArray.join('');
-    byte = byte + ''.padStart(moves, '0');
-    byte = byte.slice(moves);
-
+    const pad = ''.padStart(moves, '0')
+    
+    byte = (byte + pad).slice(moves);
     const decimal = parseInt(byte, 2);
 
-    return new Byte(decimal, this.#size);
+    return new Bits(decimal, this.#size);
   }
 
   shiftRight = (moves) => {
     let byte = this.#byteArray.join('');
-    byte = ''.padStart(moves, '0') + byte;
+    const pad = ''.padStart(moves, '0');
+
+    byte = pad + byte;
     byte = byte.slice(0, -moves);
 
     const decimal = parseInt(byte, 2);
 
-    return new Byte(decimal, this.#size);
+    return new Bits(decimal, this.#size);
   }
 
   xor = (byte) => {
     let dividend = this;
     let divisor = byte;
+    let resultSize = this.#size
     
     if (dividend.#size > divisor.#size) {
-      divisor = this._padLeft(divisor, dividend.#size);
+      divisor = this.#padLeft(divisor, dividend);
+      resultSize = dividend.#size;
     }
     else if (dividend.#size < divisor.#size) {
-      dividend = this._padLeft(dividend, divisor.#size)
+      dividend = this.#padLeft(dividend, divisor);
+      resultSize = divisor.#size;
     }
 
     const resultArray = new Array(dividend.#size);
@@ -68,11 +73,11 @@ module.exports.Byte = class Byte {
 
     const result = parseInt(resultArray.join(''), 2);
 
-    return new Byte (result, this.#size);
+    return new Bits(result, resultSize);
     
   }
 
-  _padLeft = (byte, size) => {
-    return new Byte(parseInt(byte._byteArray.join(''), 2), size);
+  #padLeft = (byte, size) => {
+    return new Bits(parseInt(byte.#byteArray.join(''), 2), size.#size);
   }
 }
