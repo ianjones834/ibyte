@@ -24,6 +24,10 @@ module.exports.Bits = class Bits {
     return parseInt(this.#byteArray.join(''), 2).toString(16);
   }
 
+  toDecimal = () => {
+    return parseInt(this.#byteArray.join(''), 2);
+  }
+
   shiftLeft = (moves) => {
     let byte = this.#byteArray.join('');
     const pad = ''.padStart(moves, '0')
